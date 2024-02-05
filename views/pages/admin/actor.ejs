@@ -1,0 +1,392 @@
+<div class="row m-3">
+    <div class="col-md-12">
+        <h2>Aktyorlar bo'limi</h2>
+    </div>
+</div>
+<div class="row m-3">
+    <!-- Jadval -->
+    <div class="col-md-10">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">ID</th>
+                    <th style="width: 10%;">Rasm</th>
+                    <th>F.I.O</th>
+                    <th>Status</th>
+                    <th style="width: 10%;">Sana</th>
+                    <th style="width: 15%;">Sozlama</th>
+                </tr>
+            </thead>
+            <tbody class="putTable">
+
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" id="paginations"> </ul>
+        </nav>
+
+    </div>
+    <!-- Malumot yaratish -->
+    <div class="col-md-2">
+        <button data-bs-toggle="modal" data-bs-target="#CREATE_MODAL" class="btn btn-success col-md-12"
+            type="button">Ma'lumot yaratish</button>
+    </div>
+</div>
+
+
+
+<!-- Yaratish uchun modal -->
+<div class="modal fade" id="CREATE_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Yaratish</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="IMAGE">
+                    <label class="input-group-text" for="IMAGE">Aktyor rasmini yuklang</label>
+                </div>
+
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - uz</span>
+                    <input type="text" aria-label="" id="NAME_UZ" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - ru</span>
+                    <input type="text" aria-label="" id="NAME_RU" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - en</span>
+                    <input type="text" aria-label="" id="NAME_EN" class="form-control">
+                </div>
+
+
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - uz</span>
+                    <textarea id="DESCRIPTION_UZ" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - ru</span>
+                    <textarea id="DESCRIPTION_RU" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - en</span>
+                    <textarea id="DESCRIPTION_EN" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Status</span>
+                    <select id="STATUS" class="form-control">
+                        <option value="">Tanlash</option>
+                        <option value="1">Режиссёр</option>
+                        <option value="2">Актёры</option>
+                        <option value="3">Актёры дубляжа</option>
+                        <option value="4">Продюсеры</option>
+                        <option value="5">Режиссёр дубляжа</option>
+                        <option value="6">Художники</option>
+                        <option value="7">Сценаристы</option>
+                        <option value="8">Монтаж </option>
+                    </select>
+                </div>
+
+                <button onclick="saveData()" type="button" class="btn btn-success">Saqlash</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Tahrirlash uchun modal -->
+<div class="modal fade" id="EDIT_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tahrirlash</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body editForm">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script src="/toastr/notification.js"></script>
+<script src="/imask.js"></script>
+
+<script>
+    // Saqlash
+    const saveData = () => {
+        const formData = new FormData()
+        const image = document.getElementById("IMAGE").files[0]
+        const nameuz = document.getElementById("NAME_UZ").value
+        const nameru = document.getElementById("NAME_RU").value
+        const nameen = document.getElementById("NAME_EN").value
+        const descriptionuz = document.getElementById("DESCRIPTION_UZ").value
+        const descriptionru = document.getElementById("DESCRIPTION_RU").value
+        const descriptionen = document.getElementById("DESCRIPTION_EN").value
+        const status = document.getElementById("STATUS").value
+
+
+        formData.append("upload-multiple", image)
+        formData.append("nameuz", nameuz)
+        formData.append("nameru", nameru)
+        formData.append("nameen", nameen)
+        formData.append("descriptionuz", descriptionuz)
+        formData.append("descriptionru", descriptionru)
+        formData.append("descriptionen", descriptionen)
+        formData.append("status", status)
+
+        if (!image || image == "" ||
+            nameuz == "" ||
+            nameru == "" ||
+            nameen == "" ||
+            descriptionuz == "" ||
+            descriptionru == "" ||
+            descriptionen == "" ||
+            status == ""
+        ) {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            axios.post("/api/actor/create", formData).then((response) => {
+                getDatas()
+            })
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+
+
+    // Jadvalga joylashtirish
+    const createTABLE = async (data) => {
+        const putTable = $(".putTable")
+        await putTable.html("")
+        data.forEach((item, index) => {
+            putTable.append(`
+                    <tr>
+                        <td style="vertical-align: middle ;">${index += 1}</td>
+                        <td style="vertical-align: middle ;">
+                            <img style="width: 80px; border-radius: 20px;" src="/uploads/${item.image[0]}" />
+                        </td>
+                        <td style="vertical-align: middle ;">${item.name.uz}</td>
+                        <td style="vertical-align: middle ;">
+                            ${
+                                (item.status == 1) ? `<span class="fs-6 badge bg-primary"> Режиссёр </span> ` :    
+                                (item.status == 2) ? `<span class="fs-6 badge bg-primary"> Актёры </span> ` :    
+                                (item.status == 3) ? `<span class="fs-6 badge bg-primary"> Актёры дубляжа </span> ` :    
+                                (item.status == 4) ? `<span class="fs-6 badge bg-primary"> Продюсеры </span> ` :    
+                                (item.status == 5) ? `<span class="fs-6 badge bg-primary"> Режиссёр дубляжа </span> ` :    
+                                (item.status == 6) ? `<span class="fs-6 badge bg-primary"> Художники </span> ` :    
+                                (item.status == 7) ? `<span class="fs-6 badge bg-primary"> Сценаристы </span> ` :    
+                                (item.status == 8) ? `<span class="fs-6 badge bg-primary"> Монтаж </span> ` :    
+                                `<span class="badge bg-danger"> Mavjud emas </span> `  
+                        
+                            }    
+                        </td>
+                        <td style="vertical-align: middle ;">${new Date(item.createdAt).toLocaleString("en-GB")}</td>
+                        <td style="vertical-align: middle ;">
+                            <button style="width: 100%; margin: 2px 0;" onclick="getImage('${item._id}')"  data-bs-toggle="modal" data-bs-target="#EDIT_MODAL" class="btn btn-warning" type="button">Tahrirlash (File)</button>
+                            <button style="width: 100%; margin: 2px 0;" onclick="getContext('${item._id}')"  data-bs-toggle="modal" data-bs-target="#EDIT_MODAL" class="btn btn-primary" type="button">Tahrirlash (Context)</button>
+                            <button style="width: 100%; margin: 2px 0;" onclick="deleteData('${item._id}')"class="btn btn-danger" type="button">O'chirish</button>
+                        </td>
+                    </tr>
+                `)
+        });
+    }
+    // Jadvalni boshatish
+    const emptyTABLE = async () => {
+        const putTable = $(".putTable");
+        await putTable.html("");
+        putTable.append('')
+    }
+    // Paginatsiyani bo'shatish
+    const emptyPAGINATION = async () => {
+        const paginations = $("#paginations");
+        await paginations.html("");
+        paginations.append(``);
+    }
+    let default_pagination = 1
+    const getDatas = (pag) => {
+        emptyPAGINATION() // paginatsiya yangilanib oladi
+        const query = { params: { pages: (!pag || pag == undefined) ? default_pagination : (pag == 1) ? 1 : pag } }
+        axios.get("/api/actor/all", query)
+            .then(async (response) => {
+                const data = response.data.data;
+                const total = response.data.total;
+                const count = response.data.count;
+                if (data == "") {
+                    emptyTABLE()
+                    emptyPAGINATION()
+                }
+                else {
+                    createTABLE(data)
+
+                    // Paginatsiyani yangilash
+                    let paginationTotal = Math.ceil(parseInt(total) / count)
+                    const paginations = $("#paginations");
+                    await paginations.html("");
+                    for (let index = 1; index <= paginationTotal; index++) {
+                        paginations.append(`<button onclick="selectedPagination(${parseInt(index)})" type="button" style="border-radius: 10%; width: 35px; height: 35px;  margin: 1px; padding: 4px; font-size: 12px; text-align: center;" class="btn btn-outline-dark">${index}</button>`);
+                    }
+                }
+            })
+    }
+    getDatas()
+    const selectedPagination = (numbers) => {
+        getDatas(numbers)
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------
+
+    const deleteData = (id) => {
+        axios.delete(`/api/actor/${id}`).then((response) => {
+            getDatas()
+        })
+    }
+
+
+
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+    const getImage = (id) => {
+        axios.get(`/api/actor/${id}`).then(async (response) => {
+            const data = response.data.data;
+            const editForm = $(".editForm")
+            await editForm.html("")
+            editForm.append(`
+                <img style="width: 50%; margin: 10px 25%; border-radius: 20px;" src="/uploads/${data.image[0]}" />
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="IMAGE_UPDATE">
+                    <label class="input-group-text" for="IMAGE">Avatar yuklang</label>
+                </div>
+                <button  type="button" onclick="editDataImage('${data._id}')" class="btn btn-success">Saqlash</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+            `)
+        })
+    }
+    const editDataImage = (id) => {
+        const formData = new FormData()
+        const image = document.getElementById("IMAGE_UPDATE").files[0]
+        formData.append("upload-multiple", image)
+        if (!image || image == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            axios.put(`/api/actor/file/${id}`, formData).then((response) => {
+                getDatas()
+                getImage(id)
+            })
+        }
+    }
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+    const getContext = (id) => {
+        axios.get(`/api/actor/${id}`).then(async (response) => {
+            const data = response.data.data;
+            const editForm = $(".editForm")
+            await editForm.html("")
+            editForm.append(`
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - uz</span>
+                    <input value="${data.name.uz}" type="text" aria-label="" id="NAME_UZ_UPDATE" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - ru</span>
+                    <input value="${data.name.ru}"  type="text" aria-label="" id="NAME_RU_UPDATE" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - en</span>
+                    <input value="${data.name.en}"  type="text" aria-label="" id="NAME_EN_UPDATE" class="form-control">
+                </div>
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - uz</span>
+                    <textarea id="DESCRIPTION_UZ_UPDATE" cols="30" rows="5" class="form-control">${data.description.uz}</textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - ru</span>
+                    <textarea id="DESCRIPTION_RU_UPDATE" cols="30" rows="5" class="form-control">${data.description.ru}</textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - en</span>
+                    <textarea id="DESCRIPTION_EN_UPDATE" cols="30" rows="5" class="form-control">${data.description.en}</textarea>
+                </div>
+
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Status</span>
+                    <select id="STATUS_UPDATE" class="form-control">
+                        <option value="">Tanlash</option>
+                        <option value="1">Режиссёр</option>
+                        <option value="2">Актёры</option>
+                        <option value="3">Актёры дубляжа</option>
+                        <option value="4">Продюсеры</option>
+                        <option value="5">Режиссёр дубляжа</option>
+                        <option value="6">Художники</option>
+                        <option value="7">Сценаристы</option>
+                        <option value="8">Монтаж </option>
+                    </select>
+                </div>
+
+
+
+                <button  type="button" onclick="editDataContext('${data._id}')" class="btn btn-success">Saqlash</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+            `)
+        })
+    }
+    const editDataContext = (id) => {
+        const nameuz = document.getElementById("NAME_UZ_UPDATE").value
+        const nameru = document.getElementById("NAME_RU_UPDATE").value
+        const nameen = document.getElementById("NAME_EN_UPDATE").value
+        const descriptionuz = document.getElementById("DESCRIPTION_UZ_UPDATE").value
+        const descriptionru = document.getElementById("DESCRIPTION_RU_UPDATE").value
+        const descriptionen = document.getElementById("DESCRIPTION_EN_UPDATE").value
+        const status = document.getElementById("STATUS_UPDATE").value
+
+        if (nameuz == "" || nameru == "" || nameen == "" || descriptionuz == "" || descriptionru == "" || descriptionen == "" || status == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+
+            const body = {
+                name: {
+                    uz: nameuz,
+                    ru: nameru,
+                    en: nameen,
+                },
+                description: {
+                    uz: descriptionuz,
+                    ru: descriptionru,
+                    en: descriptionen,
+                },
+                status: status
+            }
+
+
+            axios.put(`/api/actor/context/${id}`, body).then((response) => {
+                getDatas()
+            })
+        }
+    }
+
+</script>

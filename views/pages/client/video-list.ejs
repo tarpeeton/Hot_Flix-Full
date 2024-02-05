@@ -1,0 +1,105 @@
+<style>
+    .cards {
+        width: 100%;
+        border: 2px solid orange;
+        text-align: center;
+        padding: 20px 0;
+        border-radius: 20px;
+        box-shadow: 0 0 10px orange;
+    }
+</style>
+
+<section class="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 id="mixedTITLE" class="home__title"></h1>
+            </div>
+            <div class="col-12 row lists mt-4">
+
+            </div>
+        </div>
+    </div>
+</section>
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script>
+
+    const mixedID = String(window.location.pathname).split("/")[2]
+
+    const setData = async (data) => { // [{}, {}]
+        const lists = $(".lists")
+        await lists.html("")
+
+        // Tekshirish
+
+        if (data == "") {
+            lists.append(`
+                    <div class="col-md-6 offset-3 cards">
+                        <h1 class="card__title">Mavjud emas</h1>
+                    </div>
+                `)
+        }
+        else {
+            data.forEach((item) => {
+                lists.append(`
+                    <div class="col-6 col-sm-2 col-md-2 col-xl-2">
+                        <div class="card">
+                            <div class="card__cover">
+                                <img src="/uploads/${item.image[0]}" alt="">
+                                <a href="/${item._id}" class="card__play">
+                                    <i class="icon ion-ios-play"></i>
+                                </a>
+                            </div>
+                            <div class="card__content" >
+                                <h3 class="card__title"><a href="/${item._id}">${item.name.uz}</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                `)
+            })
+        }
+    }
+    const setDatas = (mixedID) => {
+        const config = {
+            params: {
+                mixedID: mixedID
+            }
+        }
+        axios.get("/api/video/filter", config).then((res) => {
+            const data = res.data.data;
+            setData(data)
+        })
+
+
+    }
+    setDatas(mixedID)
+
+
+    const mixedInformation = (mixedID) => {
+        axios.get(`/api/mixed/${mixedID}`).then((res) => {
+            const data = res.data.data;
+            console.log(data)
+            const name = document.getElementById("mixedTITLE")
+            name.innerHTML = data.name.uz
+        })
+    }
+    mixedInformation(mixedID)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

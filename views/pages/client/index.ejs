@@ -1,0 +1,223 @@
+<section class="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="home__title">Primyera</h1>
+                <button class="home__nav home__nav--prev" type="button">
+                    <i class="icon ion-ios-arrow-round-back"></i>
+                </button>
+                <button class="home__nav home__nav--next" type="button">
+                    <i class="icon ion-ios-arrow-round-forward"></i>
+                </button>
+            </div>
+
+            <div class="col-12">
+                <div class="owl-carousel home__carousel home__carousel--bg slider-all">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filtrlash -->
+<section class="content">
+    <div class="content__head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="content__title">Filtrlash</h2>
+
+                    <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+                        <li class="nav-item">
+                            <a onclick="getDatas(1, '1')" class="nav-link active" data-toggle="tab" href="#tab-1"
+                                role="tab" aria-controls="tab-2" aria-selected="false">Kinolar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="getDatas(1 , '2')" class="nav-link" data-toggle="tab" href="#tab-3" role="tab"
+                                aria-controls="tab-4" aria-selected="false">Multfilmlar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="getDatas(1, '3')" class="nav-link" data-toggle="tab" href="#tab-2" role="tab"
+                                aria-controls="tab-3" aria-selected="false">Seriallar</a>
+                        </li>
+                    </ul>
+
+
+
+                    <div class="content__mobile-tabs" id="content__mobile-tabs">
+                        <div class="content__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <input type="button" value="New releases">
+                            <span></span>
+                        </div>
+
+                        <div class="content__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a onclick="getDatas(1, '1')" class="nav-link active" data-toggle="tab"
+                                        href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="false">Kinolar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a onclick="getDatas(1 , '2')" class="nav-link" data-toggle="tab" href="#tab-1"
+                                        role="tab" aria-controls="tab-1" aria-selected="false">Multfilmlar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a onclick="getDatas(1, '3')" class="nav-link" data-toggle="tab" href="#tab-1"
+                                        role="tab" aria-controls="tab-1" aria-selected="false">Seriallar</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                <div class="row row--grid putTable">
+                </div>
+            </div>
+        </div>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" id="paginations"> </ul>
+        </nav>
+    </div>
+</section>
+
+
+
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script>
+
+    // Hamma kategoriyani olish
+    axios.get("/api/home/all").then(async (res) => {
+        const movie = res.data.movie
+        const cartoon = res.data.cartoon
+        const serial = res.data.serial
+        const data = movie.concat(cartoon, serial)
+        const appendElement = $(".slider-all")
+        await appendElement.html("")
+        if (data == "") {
+            appendElement.append(`
+                <div class="card card--big">
+                    <div class="card__cover" style="position: relative;">
+                        <img src="/img/covers/cover.jpg" alt="">
+                        <h5  style="position: absolute; top: 40%; color: white; width: 50%; left: 25%; right: 25%;  text-align: center;" > Video mavjud emas </h5> 
+                    </div>
+                </div>
+            `)
+        }
+        else {
+            data.forEach((item) => {
+                appendElement.append(`
+                    <div class="card card--big">
+                        <div class="card__cover">
+                            <img src="/uploads/${item.image[0]}" alt="">
+                            <a href="/video-list/${item._id}" class="card__play">
+                                <i class="icon ion-ios-play"></i>
+                            </a>
+                            <span class="card__rate card__rate--green">${item.imdb}</span>
+                        </div>
+                        <div class="card__content">
+                            <h3 class="card__title"><a href="/video-list/${item._id}">${item.name.uz}</a></h3>
+                        </div>
+                    </div>
+                `)
+            });
+        }
+
+
+    })
+
+
+    // Filtrlash
+
+    const createTABLE = async (data) => {
+        const putTable = $(".putTable")
+        await putTable.html("")
+        data.forEach((item, index) => {
+            const badge = (status, payment) => {
+                if (status == 1) return `<span style="font-size: 12px; color: white; font-weight: 500; padding: 5px 10px; background-color: green; border-radius: 5px;" >Bepul</span>`
+                if (status == 2) return `<span style="font-size: 12px; color: white; font-weight: 500; padding: 5px 10px; background-color: orange; border-radius: 5px;" >Obuna bo'lish</span>`
+                if (status == 3) return `<span style="font-size: 12px; color: white; font-weight: 500; padding: 5px 10px; background-color: red; border-radius: 5px; " >Sotib olish - ${payment} so'm</span>`
+            }
+            const payments = (item.status == 1 ) ? badge(1) : (item.status == 2 ) ? badge(2) : (item.status == 3) ? badge(3, item.payment) : `<span style="width: 200px;" class="badge bg-dark p-2 fs-6">Mavjud emas</span>`
+
+            putTable.append(`
+                <div class="col-6 col-sm-4 col-md-3 col-xl-3">
+                    <div class="card">
+                        <div class="card__cover">
+                            <img src="/uploads/${item.image[0]}" alt="">
+                            <a href="/video-list/${item._id}" class="card__play">
+                                <i class="icon ion-ios-play"></i>
+                            </a>
+                            <span class="card__rate card__rate--green">${item.imdb}</span>
+                        </div>
+                        <div class="card__content" >
+                            <h3 class="card__title"><a href="/video-list/${item._id}">${item.name.uz}</a></h3>
+                            <p style="width: 200px;" >${payments}</p>
+                        </div>
+                    </div>
+                </div>
+            `)
+        });
+    }
+    const emptyTABLE = async () => {
+        const putTable = $(".putTable");
+        await putTable.html("");
+        putTable.append('')
+    }
+    const emptyPAGINATION = async () => {
+        const paginations = $("#paginations");
+        await paginations.html("");
+        paginations.append(``);
+    }
+
+
+    let DefaultPagination = 1
+    let DefaultStatus = "1"
+    const getDatas = (pag, types) => {
+        emptyPAGINATION() // paginatsiya yangilanib oladi
+
+        DefaultStatus = types
+        const query = {
+            params: {
+                pages: (!pag || pag == undefined) ? DefaultPagination : (pag == 1) ? 1 : pag,
+                types: (!types || types == undefined) ? DefaultStatus : (types == "1") ? "1" : types,
+            }
+        }
+        axios.get("/api/mixed/filter", query)
+            .then(async (response) => {
+                const data = response.data.data;
+                const total = response.data.total;
+                const count = response.data.count;
+                if (data == "") {
+                    emptyTABLE()
+                    emptyPAGINATION()
+                }
+                else {
+                    createTABLE(data)
+
+                    // Paginatsiyani yangilash
+                    let paginationTotal = Math.ceil(parseInt(total) / count)
+                    DefaultPagination = 1
+                    const paginations = $("#paginations");
+                    await paginations.html("");
+                    for (let index = 1; index <= paginationTotal; index++) {
+                        paginations.append(`<button onclick="selectedPagination(${parseInt(index)})" type="button" style="border: 1px solid white; border-radius: 10%; width: 35px; height: 35px;  margin: 1px; padding: 4px; font-size: 12px; text-align: center; color: white;" class="btn btn-light"> ${index} </button>`);
+                    }
+                }
+            })
+    }
+    getDatas(1, "1")
+    const selectedPagination = (numbers) => {
+        getDatas(numbers, DefaultStatus)
+    }
+
+</script>

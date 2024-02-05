@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="/icon/favicon-32x32.png">
+
+
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/toastr/toastr.min.css">
+
+
+</head>
+
+<body>
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+            <img src="/img/logo.svg" alt="">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <button data-bs-toggle="offcanvas" href="#offcanvasExample" role="button"
+                            aria-controls="offcanvasExample" class="btn btn-warning border border-2 border-warning"
+                            type="submit">MENU</button>
+                    </li>
+                    <li class="nav-item ms-5">
+                        <a class="nav-link  text-light" aria-current="page" href="#">Filtrlash</a>
+                    </li>
+                    <li class="nav-item ms-5">
+                        <a class="nav-link  text-light" aria-current="page" href="#">Qidiruv</a>
+                    </li>
+
+                </ul>
+                <form class="d-flex" role="search">
+                    <button class="btn btn-outline-warning border border-2 border-warning" type="button"
+                        onclick="logOut()">Chiqish</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="offcanvas offcanvas-start" style="width: 20% ;" tabindex="-1" id="offcanvasExample"
+        aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menu bo'limi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="list-group">
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/index" class="text-light" style="text-decoration: none;">Statistika</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/year" class="text-light" style="text-decoration: none;">Yillar bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/quality" class="text-light" style="text-decoration: none;">Video sifati bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/age" class="text-light" style="text-decoration: none;">Yosh bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/avatar" class="text-light" style="text-decoration: none;">Avatar bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/category" class="text-light" style="text-decoration: none;">Kategoriya bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/country" class="text-light" style="text-decoration: none;">Davlatlar bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/genre" class="text-light" style="text-decoration: none;">Janrlar bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/language" class="text-light" style="text-decoration: none;">Tillar bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/tag" class="text-light" style="text-decoration: none;">Teglar bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/actor" class="text-light" style="text-decoration: none;">Aktyor va Aktrisa  bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/mixed" class="text-light" style="text-decoration: none;">Kino/Serial/Multfilm  bo'limi</a>
+                </li>
+                <li class="btn btn-dark mt-1" style="border-radius: 0; text-align: left;">
+                    <a href="/admin/video" class="text-light" style="text-decoration: none;">Videolar  bo'limi</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <%- body %>
+       
+        <script src="/jquery.min.js"></script>
+        <script src="/toastr/toastr.min.js"></script>
+        <script src="/toastr/toastr.init.js"></script>
+        <script src="/bootstrap.min.js"></script>
+        <script>
+            const logOut = () => {
+                axios.get("/api/user/log-out").then((res) => {
+                    window.localStorage.removeItem("token")
+                    return window.location.replace("/auth/sign-in")
+                })
+            }
+        </script>
+</body>
+
+</html>

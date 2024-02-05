@@ -1,0 +1,68 @@
+<div class="menu">
+    <div class="forms">
+        <h1>Kirish</h1>
+        <label>Telefon raqam</label>
+        <input type="text" id="TELEPHONE">
+        <label>Maxfiy parol</label>
+        <input type="password" id="PASSWORD">
+        <hr>
+        <button class="signIn" type="button" onclick="SignIn()">Profilga kirish</button>
+        <a class="forgetPassword" href="/auth/forget-password">Parolni qayta tiklash</a>
+    </div>
+</div>
+
+
+<script>
+    const telephone = document.getElementById("TELEPHONE")
+    IMask(telephone, {
+        mask: '998-00-000-00-00',
+    })
+
+
+    // Profilga kirish
+    const SignIn = () => {
+        const phone = document.getElementById("TELEPHONE").value;
+        const password = document.getElementById("PASSWORD").value;
+
+        if (phone == "" || password == "") {
+            DangerMessage("Telefon yoki parolda xatolik mavjud")
+        }
+        else {
+            const phones = String(phone).split("-").join("")
+            axios.post("/api/user/sign-in", {
+                phone: phones,
+                password: password,
+                check: "admin-side"
+            })
+                .then((res) => {
+
+                    console.log(res.data)
+                    const status = res.data.status;
+                    const userRole = res.data.data
+                    if (status == false) {
+                        WarningMessage(res.data.error)
+                    }
+                    else {
+                        if (userRole.role == "admin") {
+                            window.localStorage.setItem("token", userRole.token)
+                            return window.location.replace("/admin/index")
+                        }
+                        if (userRole.role == "moderator") {
+                            window.localStorage.setItem("token", userRole.token)
+                            return window.location.replace("/moderator/index")
+                        }
+                    }
+
+                })
+        }
+    }
+
+
+
+
+
+
+
+
+
+</script>

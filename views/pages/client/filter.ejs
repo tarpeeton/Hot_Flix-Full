@@ -1,0 +1,249 @@
+<link rel="stylesheet" href="/choices.min.css">
+<style>
+    .input-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group-text {
+        width: 20%;
+        color: orange;
+        font-weight: 300;
+    }
+
+    .choices {
+        width: 100%;
+    }
+
+    .choices__list--multiple .choices__item {
+        background-color: #f9bc06;
+        border: 1px solid #f9bc06;
+        font-weight: 500;
+        border-radius: 2px;
+
+    }
+
+    .choices__inner,
+    .choices__input,
+    .choices__list {
+        background-color: #1a191f;
+        color: #f9bc06;
+        font-weight: 500;
+    }
+
+    .header__search-input {
+        width: 100%;
+    }
+
+    .form-control {
+        background-color: #1a191f;
+        color: white;
+        padding: 6px;
+        border-radius: 5px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+</style>
+
+
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <h1 class="section__title">Filtrlash</h1>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="/">Asosiy sahifa</a></li>
+                        <li class="breadcrumb__item breadcrumb__item--active">Filtrlash</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="filter">
+    <div class="container">
+        <div class="row col-md-12">
+
+            <!-- Filtrlash -->
+            <div class="col-md-3">
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Year</span>
+                    <select id="YEAR" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Country</span>
+                    <select id="COUNTRY" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Category</span>
+                    <select id="CATEGORY" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Genre</span>
+                    <select id="GENRE" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Language</span>
+                    <select id="LANGUAGE" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Quality</span>
+                    <select id="QUALITY" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Actor</span>
+                    <select id="ACTOR" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Age</span>
+                    <select id="AGE" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Tag</span>
+                    <select id="TAG" class="form-control">
+
+                    </select>
+                </div>
+
+               
+
+                <div class="input-group mb-3">
+                    <button class="filter__btn" onclick="filterAll()" type="button">Filtrlash</button>
+                </div>
+            </div>
+
+
+
+
+            <!-- Filtrdan o'tgan videolar -->
+            <div class="row col-md-9 products">
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="/imask.js"></script>
+<script src="/choices.js"></script>
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+
+<script>
+    // 1.Hamma selectionlarni olish
+   
+    const setMultiSelection = async (data, selection,) => {
+        const appends = $(selection);
+        await appends.html("")
+        appends.append(`<option value="">Tanlash</option>`)
+        data.forEach((item) => {
+            appends.append(`<option value="${item._id}">${item.name.uz ? item.name.uz : item.name}</option>`)
+        })
+    }
+    const getSelection = async (selecting) => {
+        axios.get("/api/year/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#YEAR",)
+        })
+        axios.get("/api/country/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#COUNTRY",)
+        })
+        axios.get("/api/category/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#CATEGORY",)
+        })
+        axios.get("/api/genre/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#GENRE",)
+        })
+        axios.get("/api/language/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#LANGUAGE",)
+        })
+        axios.get("/api/quality/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#QUALITY",)
+        })
+        axios.get("/api/actor/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#ACTOR",)
+        })
+        axios.get("/api/age/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#AGE",)
+        })
+        axios.get("/api/tag/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#TAG")
+        })
+    }
+    getSelection()
+
+
+    const filterAll = () => {
+        const YEAR = document.getElementById("YEAR").value
+        const COUNTRY = document.getElementById("COUNTRY").value
+        const CATEGORY = document.getElementById("CATEGORY").value
+        const GENRE = document.getElementById("GENRE").value
+        const LANGUAGE = document.getElementById("LANGUAGE").value
+        const QUALITY = document.getElementById("QUALITY").value
+        const ACTOR = document.getElementById("ACTOR").value
+        const AGE = document.getElementById("AGE").value
+        const TAG = document.getElementById("TAG").value
+
+        const newParams = { params: new Object() }
+
+
+        if (YEAR != "") newParams.params.yearID = YEAR
+        if (YEAR == "") delete newParams.params.yearID
+        if (COUNTRY != "") newParams.params.countryID = COUNTRY
+        if (COUNTRY == "") delete newParams.params.countryID
+        if (CATEGORY != "") newParams.params.categoryID = CATEGORY
+        if (CATEGORY == "") delete newParams.params.categoryID
+        if (GENRE != "") newParams.params.genreID = GENRE
+        if (GENRE == "") delete newParams.params.genreID
+        if (LANGUAGE != "") newParams.params.languageID = LANGUAGE
+        if (LANGUAGE == "") delete newParams.params.languageID
+        if (QUALITY != "") newParams.params.qualityID = QUALITY
+        if (QUALITY == "") delete newParams.params.qualityID
+        if (ACTOR != "") newParams.params.actorID = ACTOR
+        if (ACTOR == "") delete newParams.params.actorID
+        if (AGE != "") newParams.params.ageID = AGE
+        if (AGE == "") delete newParams.params.ageID
+        if (TAG != "") newParams.params.tagID = TAG
+        if (TAG == "") delete newParams.params.tagID
+
+        axios.get("/api/mixed/filters", newParams).then((response) => {
+            setData(response.data.data)
+            console.log(response.data.data)
+        })
+    }
+
+    const setData = async (data) => {
+        const products = $(".products")
+        await products.html("")
+        data.forEach((item) => {
+            products.append(`
+                <div class="col-6 col-sm-4 col-md-3 col-xl-3">
+                    <div class="card">
+                        <div class="card__cover">
+                            <img src="/uploads/${item.image[0]}" alt="">
+                            <a href="/video-list/${item._id}" class="card__play">
+                                <i class="icon ion-ios-play"></i>
+                            </a>
+                            <span class="card__rate card__rate--green">${item.imdb}</span>
+                        </div>
+                        <div class="card__content" >
+                            <h3 class="card__title"><a href="/video-list/${item._id}">${item.name.uz}</a></h3>
+                            <span style="color: orange;">
+                                ${item.types == "1" ? "Kino" : item.types == "2" ? "Multfilm" : item.types == "3" ? "Serial" : "Mavjud emas"}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `)
+        })
+    }
+
+
+</script>

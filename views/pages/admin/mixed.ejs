@@ -1,0 +1,726 @@
+<link rel="stylesheet" href="/choices.min.css">
+<style>
+    .input-group {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .input-group-text {
+        width: 20%;
+    }
+
+    .choices {
+        width: 80%;
+    }
+
+    .choices__list--multiple .choices__item {
+        background-color: #0071BC;
+        border: 1px solid #0071BC;
+        border-radius: 2px;
+    }
+</style>
+
+
+<div class="row m-3">
+    <div class="col-md-12">
+        <h2>Kino -Serial - Multfilm</h2>
+    </div>
+</div>
+<div class="row m-3">
+    <!-- Jadval -->
+    <div class="col-md-10">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">ID</th>
+                    <th>Nomi</th>
+                    <th style="width: 20%;">Status</th>
+                    <th style="width: 10%;">Sana</th>
+                    <th style="width: 15%;">Sozlama</th>
+                </tr>
+            </thead>
+            <tbody class="putTable">
+
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" id="paginations"> </ul>
+        </nav>
+
+    </div>
+    <!-- Malumot yaratish -->
+    <div class="col-md-2">
+        <button data-bs-toggle="modal" data-bs-target="#CREATE_MODAL" class="btn btn-success col-md-12"
+            type="button">Ma'lumot yaratish</button>
+    </div>
+</div>
+
+
+
+<!-- Yaratish uchun modal -->
+<div class="modal fade" id="CREATE_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Yaratish</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="IMAGE">
+                    <label class="input-group-text" for="IMAGE">Rasm yuklang</label>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">YEAR</span>
+                    <select id="YEAR" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">COUNTRY</span>
+                    <select id="COUNTRY" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">CATEGORY</span>
+                    <select id="CATEGORY" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">GENRE</span>
+                    <select id="GENRE" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">LANGUAGE</span>
+                    <select id="LANGUAGE" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">QUALITY</span>
+                    <select id="QUALITY" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">ACTOR</span>
+                    <select id="ACTOR" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">AGE</span>
+                    <select id="AGE" multiple class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">TAG</span>
+                    <select id="TAG" multiple class="form-control">
+                    </select>
+                </div>
+
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - uz</span>
+                    <input type="text" aria-label="" id="NAME_UZ" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - ru</span>
+                    <input type="text" aria-label="" id="NAME_RU" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - en</span>
+                    <input type="text" aria-label="" id="NAME_EN" class="form-control">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - uz</span>
+                    <textarea id="DESCRIPTION_UZ" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - ru</span>
+                    <textarea id="DESCRIPTION_RU" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - en</span>
+                    <textarea id="DESCRIPTION_EN" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Payment</span>
+                    <input type="text" aria-label="" id="PAYMENT" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Status</span>
+                    <select id="STATUS" class="form-control">
+                        <option value="">Tanlash</option>
+                        <option value="1">Бесплатно</option>
+                        <option value="2">Подписка</option>
+                        <option value="3">Покупка</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Turni belgilang</span>
+                    <select id="TYPES" class="form-control">
+                        <option value="">Tanlash</option>
+                        <option value="1">Kino</option>
+                        <option value="2">Multfilm</option>
+                        <option value="3">Serial</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Link</span>
+                    <input type="text" aria-label="" id="LINK" class="form-control">
+                </div>
+                <button onclick="saveData()" type="button" class="btn btn-success">Saqlash</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Tahrirlash uchun modal -->
+<div class="modal fade" id="EDIT_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tahrirlash</h1>
+                <button type="button" class="btn btn-danger col-md-1" data-bs-dismiss="modal">Bekor qilish</button>
+            </div>
+            <div class="modal-body editForm">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/choices.js"></script>
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script src="/toastr/notification.js"></script>
+<script src="/imask.js"></script>
+
+<script>
+
+
+
+    // 1.Hamma selectionlarni olish
+    const setMultiSelection = async (data, selection,) => {
+        const choices = new Choices(selection, {
+            silent: false,
+            choices: data.map((item) => {
+                return {
+                    value: item._id,
+                    label: (item.name.uz ? item.name.uz : item.name),
+                }
+            }),
+            removeItems: true,
+            removeItemButton: true,
+        })
+        return choices
+    }
+    const getSelection = async (selecting) => {
+        axios.get("/api/year/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#YEAR",)
+        })
+        axios.get("/api/country/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#COUNTRY",)
+        })
+        axios.get("/api/category/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#CATEGORY",)
+        })
+        axios.get("/api/genre/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#GENRE",)
+        })
+        axios.get("/api/language/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#LANGUAGE",)
+        })
+        axios.get("/api/quality/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#QUALITY",)
+        })
+        axios.get("/api/actor/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#ACTOR",)
+        })
+        axios.get("/api/age/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#AGE",)
+        })
+        axios.get("/api/tag/all").then(async (response) => {
+            setMultiSelection(response.data.data, "#TAG")
+        })
+    }
+    getSelection()
+
+
+
+    // 2.Malumot yaratish
+    const saveData = () => {
+        const IMAGE = document.getElementById("IMAGE").files[0]
+        const NAME_UZ = document.getElementById("NAME_UZ").value;
+        const NAME_RU = document.getElementById("NAME_RU").value;
+        const NAME_EN = document.getElementById("NAME_EN").value;
+        const DESCRIPTION_UZ = document.getElementById("DESCRIPTION_UZ").value;
+        const DESCRIPTION_RU = document.getElementById("DESCRIPTION_RU").value;
+        const DESCRIPTION_EN = document.getElementById("DESCRIPTION_EN").value;
+        const PAYMENT = document.getElementById("PAYMENT").value;
+        const STATUS = document.getElementById("STATUS").value;
+        const TYPES = document.getElementById("TYPES").value;
+        const LINK = document.getElementById("LINK").value;
+        const YEAR = document.getElementById("YEAR")
+        const COUNTRY = document.getElementById("COUNTRY")
+        const CATEGORY = document.getElementById("CATEGORY")
+        const GENRE = document.getElementById("GENRE")
+        const LANGUAGE = document.getElementById("LANGUAGE")
+        const QUALITY = document.getElementById("QUALITY")
+        const ACTOR = document.getElementById("ACTOR")
+        const AGE = document.getElementById("AGE")
+        const TAG = document.getElementById("TAG")
+
+        const setArraySelection = (HTML_TAG) => {
+            const selectedArray = [];
+            for (let item of HTML_TAG) {
+                const values = item
+                if (values.selected) {
+                    selectedArray.push(String(values.value).split("").join(""))
+                }
+            }
+            return selectedArray
+        }
+        const formData = new FormData()
+        formData.append("nameuz", NAME_UZ)
+        formData.append("nameru", NAME_RU)
+        formData.append("nameen", NAME_EN)
+        formData.append("descriptionuz", DESCRIPTION_UZ)
+        formData.append("descriptionru", DESCRIPTION_RU)
+        formData.append("descriptionen", DESCRIPTION_EN)
+        formData.append("payment", PAYMENT)
+        formData.append("status", STATUS)
+        formData.append("types", TYPES)
+        formData.append("link", LINK)
+        formData.append("upload-multiple", IMAGE)
+
+        const loopSetSelection = (element, arrays) => {
+            for (var i = 0; i < arrays.length; i++) {
+                formData.append(element, arrays[i]);
+            }
+        }
+        loopSetSelection("yearID[]", setArraySelection(YEAR))
+        loopSetSelection("countryID[]", setArraySelection(COUNTRY))
+        loopSetSelection("categoryID[]", setArraySelection(CATEGORY))
+        loopSetSelection("genreID[]", setArraySelection(GENRE))
+        loopSetSelection("languageID[]", setArraySelection(LANGUAGE))
+        loopSetSelection("qualityID[]", setArraySelection(QUALITY))
+        loopSetSelection("actorID[]", setArraySelection(ACTOR))
+        loopSetSelection("ageID[]", setArraySelection(AGE))
+        loopSetSelection("tagID[]", setArraySelection(TAG))
+
+        if (
+            IMAGE == "" || !IMAGE || IMAGE == undefined ||
+            NAME_UZ == "" ||
+            NAME_RU == "" ||
+            NAME_EN == "" ||
+            DESCRIPTION_UZ == "" ||
+            DESCRIPTION_RU == "" ||
+            DESCRIPTION_EN == "" ||
+            PAYMENT == "" ||
+            STATUS == "" ||
+            LINK == "" ||
+            setArraySelection(YEAR) == "" ||
+            setArraySelection(COUNTRY) == "" ||
+            setArraySelection(CATEGORY) == "" ||
+            setArraySelection(GENRE) == "" ||
+            setArraySelection(LANGUAGE) == "" ||
+            setArraySelection(QUALITY) == "" ||
+            setArraySelection(ACTOR) == "" ||
+            setArraySelection(AGE) == "" ||
+            setArraySelection(TAG) == ""
+        ) {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            axios.post("/api/mixed/create", formData).then((response) => {
+                getDatas()
+            })
+        }
+    }
+
+    // 3.Paginatsiya orqali joylashtish
+
+    const badge = (status) => {
+        if (status == "1") return `<span style="width: 200px;" class="badge bg-success p-2 fs-6">Kino</span>`
+        if (status == "2") return `<span style="width: 200px;" class="badge bg-danger p-2 fs-6">Multfilm</span>`
+        if (status == "3") return `<span style="width: 200px;" class="badge bg-primary p-2 fs-6">Serial</span>`
+    }
+    const createTABLE = async (data) => {
+        const putTable = $(".putTable")
+        await putTable.html("")
+        data.forEach((item, index) => {
+            const yearsArray = item.yearID.map((item,) => item.name) // [{}, {}, {}]
+            putTable.append(`
+                    <tr>
+                        <td style="vertical-align: middle ;">${index += 1}</td>
+                        <td style="vertical-align: middle ;">${item.name.uz}</td>
+                        <td style="vertical-align: middle ;">${(item.types == "1" ? badge("1") : (item.types == "2" ? badge("2") : (item.types == "3" ? badge("3") : "mavjud emas")))}</td>
+                        <td style="vertical-align: middle ;">${new Date(item.createdAt).toLocaleDateString()}</td>
+                        <td style="vertical-align: middle ;">
+                            <button onclick="getData('${item._id}')"  data-bs-toggle="modal" data-bs-target="#EDIT_MODAL" class="btn btn-warning" type="button">Tahrirlash</button>
+                            <button onclick="deleteData('${item._id}')"class="btn btn-danger" type="button">O'chirish</button>
+                        </td>
+                    </tr>
+                `)
+
+        });
+    }
+    const emptyTABLE = async () => {
+        const putTable = $(".putTable");
+        await putTable.html("");
+        putTable.append('')
+    }
+    const emptyPAGINATION = async () => {
+        const paginations = $("#paginations");
+        await paginations.html("");
+        paginations.append(``);
+    }
+    let default_pagination = 1
+    const getDatas = (pag) => {
+        emptyPAGINATION() // paginatsiya yangilanib oladi
+        const query = { params: { pages: (!pag || pag == undefined) ? default_pagination : (pag == 1) ? 1 : pag } }
+        axios.get("/api/mixed/all", query)
+            .then(async (response) => {
+                const data = response.data.data;
+                const total = response.data.total;
+                const count = response.data.count;
+                if (data == "") {
+                    emptyTABLE()
+                    emptyPAGINATION()
+                }
+                else {
+                    createTABLE(data)
+
+                    // Paginatsiyani yangilash
+                    let paginationTotal = Math.ceil(parseInt(total) / count)
+                    const paginations = $("#paginations");
+                    await paginations.html("");
+                    for (let index = 1; index <= paginationTotal; index++) {
+                        paginations.append(`<button onclick="selectedPagination(${parseInt(index)})" type="button" style="border-radius: 10%; width: 35px; height: 35px;  margin: 1px; padding: 4px; font-size: 12px; text-align: center;" class="btn btn-outline-dark">${index}</button>`);
+                    }
+                }
+            })
+    }
+    getDatas()
+    const selectedPagination = (numbers) => {
+        getDatas(numbers)
+    }
+
+    // 4.Tahrirlash
+    const setMultiSelectionEdit = async (allData, selection, mixedData) => {
+        const allDatas = allData.map((item) => {
+            return { value: item._id, label: (item.name.uz ? item.name.uz : item.name) }
+        })
+        const uniques = allDatas.filter(({ value: id1 }) => !mixedData.some(({ value: id2 }) => id2 === id1));
+        const choices = new Choices(selection, {
+            silent: false,
+            choices: uniques,
+            removeItems: true,
+            removeItemButton: true,
+        })
+        choices.setValue(mixedData)
+        return choices
+    }
+    const getData = (id) => {
+        axios.get(`/api/mixed/${id}`).then(async (response) => {
+            const data = response.data.data;
+
+
+            // Reference update
+            const editForm = $(".editForm")
+            await editForm.html("")
+            const setMixedSelection = (data) => {
+                const result = data.map((object, index) => {
+                    return {
+                        value: object._id,
+                        label: object.name.uz ? object.name.uz : object.name
+                    }
+                })
+                return result
+            }
+            axios.get("/api/year/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#YEAR_UPDATE", setMixedSelection(data.yearID)) })
+            axios.get("/api/country/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#COUNTRY_UPDATE", setMixedSelection(data.countryID)) })
+            axios.get("/api/category/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#CATEGORY_UPDATE", setMixedSelection(data.categoryID)) })
+            axios.get("/api/genre/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#GENRE_UPDATE", setMixedSelection(data.genreID)) })
+            axios.get("/api/language/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#LANGUAGE_UPDATE", setMixedSelection(data.languageID)) })
+            axios.get("/api/quality/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#QUALITY_UPDATE", setMixedSelection(data.qualityID)) })
+            axios.get("/api/actor/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#ACTOR_UPDATE", setMixedSelection(data.actorID)) })
+            axios.get("/api/age/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#AGE_UPDATE", setMixedSelection(data.ageID)) })
+            axios.get("/api/tag/all").then(async (response) => { setMultiSelectionEdit(response.data.data, "#TAG_UPDATE", setMixedSelection(data.tagID)) })
+            editForm.append(`
+                <div class=" row col-md-12" style="border-radius: 30px;">
+                    <div class="col-md-4" style="position: fixed; top: 12%; left: 2%;" >
+                        <img class="img-fluid" style="width: 90%;" src="/uploads/${data.image[0]}" />
+                    </div>
+                    <div class="col-md-8" style="margin-left: 33.3%;">
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="IMAGE_UPDATE">
+                            <label class="input-group-text" for="IMAGE">Rasm yuklang</label>
+                        </div>
+                        <button  type="button" onclick="updateFiles('${data._id}')" class="btn btn-success  col-md-2 ">Saqlash</button>
+
+
+
+                        <div class="border border-3 border-dark m-3"> </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name - uz</span>
+                            <input type="text" aria-label="" id="NAME_UZ_UPDATE" value="${data.name.uz}" class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name - ru</span>
+                            <input type="text" aria-label="" id="NAME_RU_UPDATE" value="${data.name.ru}"  class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name - en</span>
+                            <input type="text" aria-label="" id="NAME_EN_UPDATE" value="${data.name.en}"  class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Description - uz</span>
+                            <textarea id="DESCRIPTION_UZ_UPDATE" cols="30" rows="5" class="form-control">${data.description.uz}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Description - ru</span>
+                            <textarea id="DESCRIPTION_RU_UPDATE" cols="30" rows="5" class="form-control">${data.description.ru}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Description - en</span>
+                            <textarea id="DESCRIPTION_EN_UPDATE" cols="30" rows="5" class="form-control">${data.description.en}</textarea>
+                        </div>
+                       
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Link</span>
+                            <input type="text"  value="${data.link}"   id="LINK_UPDATE" class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">YEAR</span>
+                            <select id="YEAR_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">COUNTRY</span>
+                            <select id="COUNTRY_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">CATEGORY</span>
+                            <select id="CATEGORY_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">GENRE</span>
+                            <select id="GENRE_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">LANGUAGE</span>
+                            <select id="LANGUAGE_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">QUALITY</span>
+                            <select id="QUALITY_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">ACTOR</span>
+                            <select id="ACTOR_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">AGE</span>
+                            <select id="AGE_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">TAG</span>
+                            <select id="TAG_UPDATE" multiple class="form-control">
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Status</span>
+                            <select id="STATUS_UPDATE" class="form-control">
+                                <option value="">Tanlash</option>
+                                <option value="1">Бесплатно</option>
+                                <option value="2">Подписка</option>
+                                <option value="3">Покупка</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Payment</span>
+                            <input type="text"  value="${data.payment}"  id="PAYMENT_UPDATE" class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Turni belgilang</span>
+                            <select id="TYPES_UPDATE" class="form-control">
+                            </select>
+                        </div>
+                        <button  type="button" onclick="updateContext('${data._id}')" class="btn btn-success  col-md-2 ">Saqlash</button>
+                        
+                    </div>
+                </div>
+            `)
+
+
+            // Stataus qismni avtomatik belgilab qo'yish
+            const status_updating = $("#STATUS_UPDATE")
+            await status_updating.html("")
+            status_updating.append(`<option value="">Tanlash</option>`)
+            if (data.types == "1") {
+                status_updating.append(`<option value="1" selected >Бесплатно</option>`)
+                status_updating.append(`<option value="2">Подписка</option>`)
+                status_updating.append(`<option value="3">Покупка</option>`)
+            }
+            if (data.types == "2") {
+                status_updating.append(`<option value="1">Бесплатно</option>`)
+                status_updating.append(`<option value="2" selected>Подписка</option>`)
+                status_updating.append(`<option value="3">Покупка</option>`)
+            }
+            if (data.types == "3") {
+                status_updating.append(`<option value="1">Бесплатно</option>`)
+                status_updating.append(`<option value="2">Подписка</option>`)
+                status_updating.append(`<option value="3" selected >Покупка</option>`)
+            }
+            // Types qismni avtomatik belgilab qo'yish
+            const types_updating = $("#TYPES_UPDATE")
+            await types_updating.html("")
+            types_updating.append(`<option value="">Tanlash</option>`)
+            if (data.types == "1") {
+                types_updating.append(`<option value="1" selected >Kino</option>`)
+                types_updating.append(`<option value="2">Multfilm</option>`)
+                types_updating.append(`<option value="3">Serial</option>`)
+            }
+            if (data.types == "2") {
+                types_updating.append(`<option value="1">Kino</option>`)
+                types_updating.append(`<option value="2" selected>Multfilm</option>`)
+                types_updating.append(`<option value="3">Serial</option>`)
+            }
+            if (data.types == "3") {
+                types_updating.append(`<option value="1">Kino</option>`)
+                types_updating.append(`<option value="2">Multfilm</option>`)
+                types_updating.append(`<option value="3" selected >Serial</option>`)
+            }
+        })
+    }
+    const updateContext = (id) => {
+        const NAME_UZ = document.getElementById("NAME_UZ_UPDATE").value;
+        const NAME_RU = document.getElementById("NAME_RU_UPDATE").value;
+        const NAME_EN = document.getElementById("NAME_EN_UPDATE").value;
+        const DESCRIPTION_UZ = document.getElementById("DESCRIPTION_UZ_UPDATE").value;
+        const DESCRIPTION_RU = document.getElementById("DESCRIPTION_RU_UPDATE").value;
+        const DESCRIPTION_EN = document.getElementById("DESCRIPTION_EN_UPDATE").value;
+        const PAYMENT = document.getElementById("PAYMENT_UPDATE").value;
+        const STATUS = document.getElementById("STATUS_UPDATE").value;
+        const TYPES = document.getElementById("TYPES_UPDATE").value;
+        const LINK = document.getElementById("LINK_UPDATE").value;
+        const YEAR = document.getElementById("YEAR_UPDATE")
+        const COUNTRY = document.getElementById("COUNTRY_UPDATE")
+        const CATEGORY = document.getElementById("CATEGORY_UPDATE")
+        const GENRE = document.getElementById("GENRE_UPDATE")
+        const LANGUAGE = document.getElementById("LANGUAGE_UPDATE")
+        const QUALITY = document.getElementById("QUALITY_UPDATE")
+        const ACTOR = document.getElementById("ACTOR_UPDATE")
+        const AGE = document.getElementById("AGE_UPDATE")
+        const TAG = document.getElementById("TAG_UPDATE")
+
+        const setArraySelection = (HTML_TAG) => {
+            const selectedArray = [];
+            for (let item of HTML_TAG) {
+                const values = item
+                if (values.selected) {
+                    selectedArray.push(String(values.value).split("").join(""))
+                }
+            }
+            return selectedArray
+        }
+
+        const body = {
+            name: {
+                uz: NAME_UZ,
+                ru: NAME_RU,
+                en: NAME_EN,
+            },
+            description: {
+                uz: DESCRIPTION_UZ,
+                ru: DESCRIPTION_RU,
+                en: DESCRIPTION_EN,
+            },
+            yearID: setArraySelection(YEAR),
+            countryID: setArraySelection(COUNTRY),
+            categoryID: setArraySelection(CATEGORY),
+            genreID: setArraySelection(GENRE),
+            languageID: setArraySelection(LANGUAGE),
+            qualityID: setArraySelection(QUALITY),
+            actorID: setArraySelection(ACTOR),
+            ageID: setArraySelection(AGE),
+            tagID: setArraySelection(TAG),
+            payment: PAYMENT,
+            status: STATUS,
+            types: TYPES,
+            link: LINK,
+        }
+
+        if (
+            NAME_UZ == "" || NAME_RU == "" || NAME_EN == "" ||
+            DESCRIPTION_UZ == "" || DESCRIPTION_RU == "" || DESCRIPTION_EN == "" ||
+            PAYMENT == "" || STATUS == "" || LINK == "" ||
+            setArraySelection(YEAR) == "" || setArraySelection(COUNTRY) == "" || setArraySelection(CATEGORY) == "" ||
+            setArraySelection(GENRE) == "" || setArraySelection(LANGUAGE) == "" || setArraySelection(QUALITY) == "" ||
+            setArraySelection(ACTOR) == "" || setArraySelection(AGE) == "" || setArraySelection(TAG) == ""
+        ) {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            axios.put(`/api/mixed/context/${id}`, body).then((response) => {
+                getDatas()
+                SuccessMessage("Tahrirlandi")
+            })
+        }
+    }
+    const updateFiles = (id) => {
+        const IMAGE = document.getElementById("IMAGE_UPDATE").files[0]
+        const formData = new FormData()
+        formData.append("upload-multiple", IMAGE)
+        if (IMAGE == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            axios.put(`/api/mixed/file/${id}`, formData).then((response) => {
+                getDatas()
+                getData(id)
+                SuccessMessage("Rasm tahrirlandi")
+            })
+        }
+    }
+
+    // 2.O'chirish
+    const deleteData = (id) => {
+        axios.delete(`/api/mixed/${id}`).then((res) => {
+            getDatas()
+            SuccessMessage("O'chirildi")
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+</script>

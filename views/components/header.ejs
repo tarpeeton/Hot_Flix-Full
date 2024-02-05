@@ -1,0 +1,100 @@
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="header__content">
+                    <a href="/" class="header__logo">
+                        <img src="/img/logo.svg" alt="">
+                    </a>
+
+                    <ul class="header__nav">
+                        <li class="header__nav-item">
+                            <a class="dropdown-toggle header__nav-link" href="/filter" >Filtrlash </a>
+                           
+                        </li>
+
+                        <li class="header__nav-item">
+                            <a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuHome" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kategoriya <i  class="icon ion-ios-arrow-down"></i></a>
+                            <ul class="dropdown-menu header__dropdown-menu all-category"   aria-labelledby="dropdownMenuHome"> </ul>
+                        </li>
+
+                        <li class="header__nav-item">
+                            <a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuHome" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Janr <i  class="icon ion-ios-arrow-down"></i></a>
+                            <ul class="dropdown-menu header__dropdown-menu all-genre"   aria-labelledby="dropdownMenuHome"> </ul>
+                        </li>
+                    </ul>
+
+                    <div class="header__auth">
+                        <form action="#" class="header__search">
+                            <input class="header__search-input" type="text" placeholder="Qidiruv...">
+                            <button class="header__search-button" type="button">
+                                <i class="icon ion-ios-search"></i>
+                            </button>
+                            <button class="header__search-close" type="button">
+                                <i class="icon ion-md-close"></i>
+                            </button>
+                        </form>
+
+                        <button class="header__search-btn" type="button">
+                            <i class="icon ion-ios-search"></i>
+                        </button>
+
+                        <!-- dropdown -->
+                        <div class="dropdown header__lang">
+                            <a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuLang"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Uzbek <i
+                                    class="icon ion-ios-arrow-down"></i></a>
+
+                            <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuLang">
+                                <li><a href="#">Uzbek</a></li>
+                                <li><a href="#">Russian</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+
+                        <a href="/" class="header__sign-in">
+                            <i class="icon ion-ios-log-in"></i>
+                            <span>Sign in</span>
+                        </a>
+                    </div>
+
+                    <button class="header__btn" type="button">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script>
+
+
+
+    // Hamma kategoriyani olish
+    axios.get("/api/category/all").then(async (res) => {
+        const data = res.data.data // [{}, {}]
+        const appendElement = $(".all-category")
+        await appendElement.html("")
+        data.forEach((item) => {
+            appendElement.append(`<li><a href="/"> + ${item.name.uz}</a></li>`)
+        });
+    })
+    
+    // Hamma janrlarni olish
+    axios.get("/api/genre/all").then(async (res) => {
+        const data = res.data.data // [{}, {}]
+        const appendElement = $(".all-genre")
+        await appendElement.html("")
+        data.forEach((item) => {
+            appendElement.append(`<li><a href="/">+ ${item.name.uz}</a></li>`)
+        });
+    })
+
+
+</script>

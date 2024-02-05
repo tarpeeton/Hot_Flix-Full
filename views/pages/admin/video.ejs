@@ -1,0 +1,620 @@
+<link rel="stylesheet" href="/choices.min.css">
+<style>
+    .input-group {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .input-group-text {
+        width: 20%;
+    }
+
+    .choices {
+        width: 80%;
+    }
+
+    .choices__list--multiple .choices__item {
+        background-color: #0071BC;
+        border: 1px solid #0071BC;
+        border-radius: 2px;
+    }
+
+    #mixeds::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    /* Track */
+    #mixeds::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px rgb(255, 255, 255);
+    }
+
+    /* Handle */
+    #mixeds::-webkit-scrollbar-thumb {
+        background: rgb(226, 226, 226);
+        transition-duration: 0.4s;
+    }
+
+    /* Handle on hover */
+    #mixeds::-webkit-scrollbar-thumb:hover {
+        background: #000000;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+
+    .play-button-outer {
+        margin: 25% auto;
+        width: 10em;
+        height: 10em;
+        background-color: rgba(0, 0, 0, .25);
+        cursor: pointer;
+    }
+
+    .play-button {
+        margin: 0 auto;
+        top: 25%;
+        position: relative;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 2.5em 0 2.5em 5em;
+        border-color: transparent transparent transparent #000;
+        opacity: .75;
+    }
+
+    .play-button-outer:hover {
+        background-color: rgba(0, 0, 0, .5);
+    }
+
+    .play-button-outer:hover .play-button {
+        opacity: 1;
+    }
+</style>
+
+
+<div class="row m-3">
+    <div class="col-md-12">
+        <h2>Video</h2>
+    </div>
+</div>
+<div class="row m-3">
+    <!-- Jadval -->
+    <div class="col-md-10">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">ID</th>
+                    <th>Nomi</th>
+                    <th style="width: 10%;">Sana</th>
+                    <th style="width: 15%;">Sozlama</th>
+                </tr>
+            </thead>
+            <tbody class="putTable">
+
+            </tbody>
+        </table>
+
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" id="paginations"> </ul>
+        </nav>
+
+    </div>
+    <!-- Malumot yaratish -->
+    <div class="col-md-2">
+        <button data-bs-toggle="modal" data-bs-target="#CREATE_MODAL" class="btn btn-success col-md-12"
+            type="button">Ma'lumot yaratish</button>
+    </div>
+</div>
+
+
+
+
+<!-- Yaratish uchun modal -->
+<div class="modal fade" id="CREATE_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Yaratish</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class=" mb-3">
+                    <label for="progress-bar" class="col-md-1">0%</label>
+                    <progress id="progress-bar" class="col-md-7" value="0" max="100"></progress>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">MIXED</span>
+                    <select id="MIXEDS" class="form-control">
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="IMAGE" multiple="multiple">
+                    <label class="input-group-text bg-success text-light" for="IMAGE">Rasmlar</label>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="VIDEO">
+                    <label class="input-group-text bg-primary  text-light" for="VIDEO">Video </label>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - uz</span>
+                    <input type="text" aria-label="" id="NAME_UZ" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - ru</span>
+                    <input type="text" aria-label="" id="NAME_RU" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name - en</span>
+                    <input type="text" aria-label="" id="NAME_EN" class="form-control">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - uz</span>
+                    <textarea id="DESCRIPTION_UZ" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - ru</span>
+                    <textarea id="DESCRIPTION_RU" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description - en</span>
+                    <textarea id="DESCRIPTION_EN" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Duration</span>
+                    <input type="text" aria-label="" id="DURATION" class="form-control">
+                </div>
+
+
+
+                <button onclick="saveData()" type="button" class="btn btn-success">Saqlash</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tahrirlash uchun modal -->
+<div class="modal fade" id="EDIT_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tahrirlash</h1>
+                <button type="button" class="btn btn-danger col-md-1" data-bs-dismiss="modal">Bekor qilish</button>
+            </div>
+            <div class="modal-body editForm">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/choices.js"></script>
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script src="/toastr/notification.js"></script>
+<script src="/imask.js"></script>
+
+<script>
+
+    const durations = document.getElementById("DURATION")
+    IMask(durations, { mask: '00:00:00' })
+
+    const setMultiSelection = async (data, selection,) => {
+        const choices = new Choices(selection, {
+            silent: false,
+            choices: data.map((item) => {
+                return {
+                    value: item._id,
+                    label: (item.name.uz ? item.name.uz : item.name),
+                }
+            }),
+            removeItems: true,
+            removeItemButton: true,
+            renderChoiceLimit: -1,
+        })
+        return choices
+    }
+    const getMixeds = () => {
+        axios.get("/api/mixed/total").then(async (response) => {
+            setMultiSelection(response.data.data, "#MIXEDS",)
+        })
+    }
+    getMixeds()
+
+
+
+
+    // 1.Yaratish
+    const saveData = () => {
+        const IMAGE_0 = document.getElementById("IMAGE").files[0]
+        const IMAGE_1 = document.getElementById("IMAGE").files[1]
+        const IMAGE_2 = document.getElementById("IMAGE").files[2]
+        const IMAGE_3 = document.getElementById("IMAGE").files[3]
+        const IMAGE_4 = document.getElementById("IMAGE").files[4]
+        const IMAGE_5 = document.getElementById("IMAGE").files[5]
+        const IMAGE_6 = document.getElementById("IMAGE").files[6]
+        const IMAGE_7 = document.getElementById("IMAGE").files[7]
+        const IMAGE_8 = document.getElementById("IMAGE").files[8]
+        const IMAGE_9 = document.getElementById("IMAGE").files[9]
+        const IMAGE_10 = document.getElementById("IMAGE").files[10]
+        const IMAGE_11 = document.getElementById("IMAGE").files[11]
+        const VIDEO = document.getElementById("VIDEO").files[0]
+        const MIXEDS = document.getElementById("MIXEDS").value;
+        const NAME_UZ = document.getElementById("NAME_UZ").value;
+        const NAME_RU = document.getElementById("NAME_RU").value;
+        const NAME_EN = document.getElementById("NAME_EN").value;
+        const DESCRIPTION_UZ = document.getElementById("DESCRIPTION_UZ").value;
+        const DESCRIPTION_RU = document.getElementById("DESCRIPTION_RU").value;
+        const DESCRIPTION_EN = document.getElementById("DESCRIPTION_EN").value;
+        const DURATION = document.getElementById("DURATION").value;
+
+        if (
+            IMAGE_0 == "" ||
+            VIDEO == "" ||
+            NAME_UZ == "" ||
+            NAME_RU == "" ||
+            NAME_EN == "" ||
+            DESCRIPTION_UZ == "" ||
+            DESCRIPTION_RU == "" ||
+            DESCRIPTION_EN == "" ||
+            DURATION == ""
+        ) { DangerMessage("Ma'lumotni kiriting") }
+        else {
+            const formData = new FormData()
+
+            formData.append("mixedID", MIXEDS)
+            formData.append("nameuz", NAME_UZ)
+            formData.append("nameru", NAME_RU)
+            formData.append("nameen", NAME_EN)
+            formData.append("descriptionuz", DESCRIPTION_UZ)
+            formData.append("descriptionru", DESCRIPTION_RU)
+            formData.append("descriptionen", DESCRIPTION_EN)
+            formData.append("duration", DURATION)
+            formData.append("upload-multiple", VIDEO) // 1.mp4
+            formData.append("upload-multiple", IMAGE_0)
+            formData.append("upload-multiple", IMAGE_1)
+            formData.append("upload-multiple", IMAGE_2)
+            formData.append("upload-multiple", IMAGE_3)
+            formData.append("upload-multiple", IMAGE_4)
+            formData.append("upload-multiple", IMAGE_5)
+            formData.append("upload-multiple", IMAGE_6)
+            formData.append("upload-multiple", IMAGE_7)
+            formData.append("upload-multiple", IMAGE_8)
+            formData.append("upload-multiple", IMAGE_9)
+            formData.append("upload-multiple", IMAGE_10)
+            formData.append("upload-multiple", IMAGE_11)
+            const bar = document.getElementById('progress-bar');
+            const config = {
+                onUploadProgress: function (progressEvent) {
+                    const percentCompleted = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                    bar.setAttribute('value', percentCompleted);
+                    bar.previousElementSibling.textContent = `${percentCompleted}%`
+                    if (percentCompleted === 100) {
+                        bar.previousElementSibling.textContent = `Yuklandi`
+                    }
+                }
+            }
+            axios.post("/api/video/create", formData, config).then((response) => {
+                getDatas() // jadvalni yangilash
+            })
+        }
+    }
+
+
+    // 2.Hamma videolarni jadvalga joylash
+    const createTABLE = async (data) => {
+        const putTable = $(".putTable")
+        await putTable.html("")
+        data.forEach((item, index) => {
+            putTable.append(`
+                    <tr>
+                        <td style="vertical-align: middle ;">${index += 1}</td>
+                        <td style="vertical-align: middle ;">${item.name.uz}</td>
+                        <td style="vertical-align: middle ;">${new Date(item.createdAt).toLocaleDateString()}</td>
+                        <td style="vertical-align: middle ;">
+                            <button onclick="getData('${item._id}')"  data-bs-toggle="modal" data-bs-target="#EDIT_MODAL" class="btn btn-warning" type="button">Tahrirlash</button>
+                            <button onclick="deleteData('${item._id}')"class="btn btn-danger" type="button">O'chirish</button>
+                        </td>
+                    </tr>
+                `)
+        });
+    }
+    const emptyTABLE = async () => {
+        const putTable = $(".putTable");
+        await putTable.html("");
+        putTable.append('')
+    }
+    const emptyPAGINATION = async () => {
+        const paginations = $("#paginations");
+        await paginations.html("");
+        paginations.append(``);
+    }
+    let default_pagination = 1
+    const getDatas = (pag) => {
+        emptyPAGINATION() // paginatsiya yangilanib oladi
+        const query = { params: { pages: (!pag || pag == undefined) ? default_pagination : (pag == 1) ? 1 : pag } }
+        axios.get("/api/video/all", query)
+            .then(async (response) => {
+                const data = response.data.data;
+                const total = response.data.total;
+                const count = response.data.count;
+                if (data == "") {
+                    emptyTABLE()
+                    emptyPAGINATION()
+                }
+                else {
+                    createTABLE(data)
+                    // Paginatsiyani yangilash
+                    let paginationTotal = Math.ceil(parseInt(total) / count)
+                    const paginations = $("#paginations");
+                    await paginations.html("");
+                    for (let index = 1; index <= paginationTotal; index++) {
+                        paginations.append(`<button onclick="selectedPagination(${parseInt(index)})" type="button" style="border-radius: 10%; width: 35px; height: 35px;  margin: 1px; padding: 4px; font-size: 12px; text-align: center;" class="btn btn-outline-dark">${index}</button>`);
+                    }
+                }
+            })
+    }
+    getDatas()
+    const selectedPagination = (numbers) => {
+        getDatas(numbers)
+    }
+
+
+    // 3.Tahrirlash
+    const setMultiSelectionEdit = async (allData, selection, mixedData) => {
+        const allDatas = allData.map((item) => {
+            return { value: item._id, label: (item.name.uz ? item.name.uz : item.name) }
+        })
+        const uniques = allDatas.filter(({ value: id1 }) => !mixedData.some(({ value: id2 }) => id2 === id1));
+        const choices = new Choices(selection, {
+            silent: false,
+            choices: uniques,
+            removeItems: true,
+            removeItemButton: true,
+        })
+        choices.setValue(mixedData)
+        return choices
+    }
+    const getData = (id) => {
+        axios.get(`/api/video/${id}`).then(async (response) => {
+            const data = response.data.data;
+            const editForm = $(".editForm")
+            await editForm.html("")
+            const setMixedSelection = (data) => {
+                const result = data.map((object, index) => {
+                    return {
+                        value: object._id,
+                        label: object.name.uz ? object.name.uz : object.name
+                    }
+                })
+                return result
+            }
+            const videos = []
+            videos.push(data.mixedID)
+            axios.get("/api/mixed/total").then(async (response) => {
+                setMultiSelectionEdit(response.data.data, "#MIXED_UPDATE", setMixedSelection(videos))
+            })
+            editForm.append(`
+                <div class=" row col-md-12" style="border-radius: 30px;">
+
+                    <div class="col-md-5 GET_IMAGES" >
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="VIDEO_UPDATE">
+                            <label class="input-group-text" for="VIDEO_UPDATE">Video yuklang</label>
+                        </div>
+                        <button  type="button" onclick="updateVideo('${data._id}')" class="btn btn-success  col-md-2 mb-3 ">Saqlash</button>
+
+                        <div class="border border-3 border-dark m-3"> </div>
+
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control"  multiple="multiple" id="IMAGE_UPDATE">
+                            <label class="input-group-text" for="IMAGE_UPDATE">Rasm yuklang</label>
+                        </div>
+                        <button  type="button" onclick="updateImage('${data._id}')" class="btn btn-success  col-md-2 mb-3 ">Saqlash</button>
+
+                        <div class="border border-3 border-dark m-3"> </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Mixed</span>
+                            <select id="MIXED_UPDATE"  class="form-control">
+                            </select>
+                        </div>
+                        <button  type="button" onclick="updateMixed('${data._id}')" class="btn btn-success  col-md-2 mb-3">Saqlash</button>
+
+                        <div class="border border-3 border-dark m-3"> </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name - uz</span>
+                            <input type="text" aria-label="" id="NAME_UZ_UPDATE" value="${data.name.uz}" class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name - ru</span>
+                            <input type="text" aria-label="" id="NAME_RU_UPDATE" value="${data.name.ru}"  class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name - en</span>
+                            <input type="text" aria-label="" id="NAME_EN_UPDATE" value="${data.name.en}"  class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Description - uz</span>
+                            <textarea id="DESCRIPTION_UZ_UPDATE" cols="30" rows="5" class="form-control">${data.description.uz}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Description - ru</span>
+                            <textarea id="DESCRIPTION_RU_UPDATE" cols="30" rows="5" class="form-control">${data.description.ru}</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Description - en</span>
+                            <textarea id="DESCRIPTION_EN_UPDATE" cols="30" rows="5" class="form-control">${data.description.en}</textarea>
+                        </div>
+                      
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Duration</span>
+                            <input type="text" aria-label="" id="DURATION_UPDATE" value="${data.duration}" class="form-control">
+                        </div>
+                        
+                        <button  type="button" onclick="updateContext('${data._id}')" class="btn btn-success  col-md-2 ">Saqlash</button>
+                        
+                    </div>
+                </div>
+            `)
+            const TotalImage = data.image; // [1, 2, 3, ... ]
+            console.log(TotalImage)
+            const allImage = $(".GET_IMAGES")
+            await allImage.html("")
+            TotalImage.forEach((image) => {
+                allImage.append(` <img  class="img-fluid m-1" style="width: 20%;" src="/uploads/${image}" />`)
+            })
+            const durations = document.getElementById("DURATION_UPDATE")
+            IMask(durations, { mask: '00:00:00' })
+        })
+    }
+
+
+    const updateVideo = (id) => {
+        const formData = new FormData()
+        const video = document.getElementById("VIDEO_UPDATE").files[0]
+        formData.append("upload-multiple", video)
+        if (video == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+
+            axios.put(`/api/video/file/${id}`, formData).then((response) => {
+                getData(id)
+                getDatas()
+            })
+        }
+
+    }
+
+
+    const updateImage = (id) => {
+        const formData = new FormData()
+
+        const image0 = document.getElementById("IMAGE_UPDATE").files[0]
+        const image1 = document.getElementById("IMAGE_UPDATE").files[1]
+        const image2 = document.getElementById("IMAGE_UPDATE").files[2]
+        const image3 = document.getElementById("IMAGE_UPDATE").files[3]
+        const image4 = document.getElementById("IMAGE_UPDATE").files[4]
+        const image5 = document.getElementById("IMAGE_UPDATE").files[5]
+        const image6 = document.getElementById("IMAGE_UPDATE").files[6]
+        const image7 = document.getElementById("IMAGE_UPDATE").files[7]
+        const image8 = document.getElementById("IMAGE_UPDATE").files[8]
+        const image9 = document.getElementById("IMAGE_UPDATE").files[9]
+        const image10 = document.getElementById("IMAGE_UPDATE").files[10]
+        const image11 = document.getElementById("IMAGE_UPDATE").files[11]
+
+        formData.append("upload-multiple", image0)
+        formData.append("upload-multiple", image1)
+        formData.append("upload-multiple", image2)
+        formData.append("upload-multiple", image3)
+        formData.append("upload-multiple", image4)
+        formData.append("upload-multiple", image5)
+        formData.append("upload-multiple", image6)
+        formData.append("upload-multiple", image7)
+        formData.append("upload-multiple", image8)
+        formData.append("upload-multiple", image9)
+        formData.append("upload-multiple", image10)
+        formData.append("upload-multiple", image11)
+
+        if (image0 == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+
+            axios.put(`/api/video/image/${id}`, formData).then((response) => {
+                getData(id)
+                getDatas()
+            })
+        }
+    }
+
+
+    const updateMixed = (id) => {
+        const mixed = document.getElementById("MIXED_UPDATE").value;
+        if (mixed == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            axios.put(`/api/video/context/${id}`, { mixedID: mixed }).then((res) => {
+                getData(id)
+                getDatas()
+            })
+        }
+    }
+
+
+    const updateContext = (id) => {
+        const nameuz = document.getElementById("NAME_UZ_UPDATE").value;
+        const nameru = document.getElementById("NAME_RU_UPDATE").value;
+        const nameen = document.getElementById("NAME_EN_UPDATE").value;
+        const descriptionuz = document.getElementById("DESCRIPTION_UZ_UPDATE").value;
+        const descriptionru = document.getElementById("DESCRIPTION_RU_UPDATE").value;
+        const descriptionen = document.getElementById("DESCRIPTION_EN_UPDATE").value;
+        const duration = document.getElementById("DURATION_UPDATE").value;
+
+        if (
+            nameuz == "" ||
+            nameru == "" ||
+            nameen == "" ||
+            descriptionuz == "" ||
+            descriptionru == "" ||
+            descriptionen == "" ||
+            duration == ""
+        ) {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            const body = {
+                name: {
+                    uz: nameuz,
+                    ru: nameru,
+                    en: nameen,
+                },
+                description: {
+                    uz: descriptionuz,
+                    ru: descriptionru,
+                    en: descriptionen,
+                },
+                duration: duration
+            }
+            axios.put(`/api/video/context/${id}`, body).then((res) => {
+                getData(id)
+                getDatas()
+            })
+        }
+    }
+
+
+    // O'chirish
+    const deleteData = (id) => {
+        axios.delete(`/api/video/${id}`).then((res) => {
+            getDatas()
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,111 @@
+<section class="section section--details section--bg" data-bg="img/section/details.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="section__title section__title--mb" id="NAME"></h1>
+            </div>
+
+            <div class="col-12 col-xl-6">
+                <div class="card card--details">
+                    <div class="row">
+                        <div class="col-12 col-sm-5 col-md-4 col-lg-3 col-xl-5">
+                            <div class="card__cover">
+                                <img id="IMAGE" src="" alt="">
+                                <span id="IMDB" class="card__rate card__rate--green"></span>
+                            </div>
+                            <a id="TRAILER" href="" class="card__trailer"><i
+                                    class="icon ion-ios-play-circle"></i>Trailerni ko'rish</a>
+                        </div>
+                        <!-- card content -->
+                        <div class="col-12 col-md-8 col-lg-9 col-xl-7">
+                            <div class="card__content">
+                                <ul class="card__meta">
+                                    <li id="ACTOR"> </li>
+                                    <li id="GENRE"> </li>
+                                    <li id="YEARS"> </li>
+                                    <li id="CATEGORY"> </li>
+                                    <li id="TAGS"> </li>
+                                    <li id="COUNTRIES"> </li>
+                                    <li id="AGES"> </li>
+                                    <li id="LANGUAGES"> </li>
+                                    <li id="QUALITIES"> </li>
+                                    <li id="TIMES"> </li>
+                                </ul>
+                                <div class="card__description" id="DESCRIPTION">
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-xl-6">
+                <video controls="" crossorigin="" playsinline="" id="player">
+                    <!-- Video files -->
+                    <source id="VIDEO_1" src="" type="video/mp4" size="576">
+                    <source id="VIDEO_2" src="" type="video/mp4" size="720">
+                    <source id="VIDEO_3" src="" type="video/mp4" size="1080">
+
+                    <!-- Caption files -->
+                    <track kind="captions" id="VIDEO_4" label="English" srclang="en" default="">
+                    <track kind="captions" id="VIDEO_5" label="Français" srclang="fr">
+                    <a href="../../../static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download="">Download</a>
+                    </track>
+                    </track>
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script>
+
+    const videoID = String(window.location.pathname).split("/")[1]
+    const elem = (value) => { return document.getElementById(value) }
+    // Boshqa malumotlarni ham olish
+    const config = { params: { videoID: videoID } }
+    axios.get("/api/video/single", config).then(async (res) => {
+        const data = res.data[0]
+        elem("NAME").innerHTML = data.name.uz
+        elem("IMDB").innerHTML = data.all[0].imdb
+        elem("DESCRIPTION").innerHTML = data.description.uz
+        elem("TRAILER").href = data.all[0].link
+        elem("IMAGE").src = `/uploads/${data.all[0].image[0]}`
+        elem("VIDEO_1").src = `/uploads/${data.video}`
+        elem("VIDEO_2").src = `/uploads/${data.video}`
+        elem("VIDEO_3").src = `/uploads/${data.video}`
+
+
+        const setPopulates = async (data, htmls, title) => {
+            const appendingElements = $(htmls)
+            await appendingElements.html("")
+            appendingElements.append(`<span>${title}</span>`)
+            for (let i = 0; i < 100; i++) {
+                if (data[i]) {
+                    appendingElements.append(`<a href="${data[i][1]._id}">${data[i][0].uz ? data[i][0].uz : data[i][0]}</a>`)
+                }
+            }
+        }
+        setPopulates(data["all-tags"], "#TAGS", "Teglar")
+        setPopulates(data["all-actors"], "#ACTOR", "Aktyorlar")
+        setPopulates(data["all-genres"], "#GENRE", "Janrlar")
+        setPopulates(data["all-years"], "#YEARS", "Yillar")
+        setPopulates(data["all-categories"], "#CATEGORY", "Kategoriyalar")
+        setPopulates(data["all-countries"], "#COUNTRIES", "Davlatlar")
+        setPopulates(data["all-ages"], "#AGES", "Yoshlar")
+        setPopulates(data["all-languages"], "#LANGUAGES", "Tillar")
+        setPopulates(data["all-qualities"], "#QUALITIES", "Video sifati")
+
+
+
+
+
+    })
+
+
+
+</script>

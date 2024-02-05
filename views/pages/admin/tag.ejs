@@ -1,0 +1,247 @@
+<div class="row m-3">
+    <div class="col-md-12">
+        <h2>Taglar bo'limi</h2>
+    </div>
+</div>
+<div class="row m-3">
+
+    <!-- Jadval -->
+    <div class="col-md-10">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">ID</th>
+                    <th>Uz</th>
+                    <th>Ru</th>
+                    <th>En</th>
+                    <th style="width: 10%;">Sana</th>
+                    <th style="width: 25%;">Sozlama</th>
+                </tr>
+            </thead>
+            <tbody class="putTable">
+
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination" id="paginations"> </ul>
+        </nav>
+
+    </div>
+
+
+    <!-- Malumot yaratish -->
+    <div class="col-md-2">
+        <button data-bs-toggle="modal" data-bs-target="#CREATE_MODAL" class="btn btn-success col-md-12"
+            type="button">Ma'lumot yaratish</button>
+
+    </div>
+</div>
+
+<!-- Yaratish uchun modal -->
+<div class="modal fade" id="CREATE_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Yaratish</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Uz</span>
+                    <input type="text" aria-label="" id="TAG_UZ" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Ru</span>
+                    <input type="text" aria-label="" id="TAG_RU" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">En</span>
+                    <input type="text" aria-label="" id="TAG_EN" class="form-control">
+                </div>
+
+                <button onclick="saveData()" type="button" class="btn btn-success">Saqlash</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tahrirlash uchun modal -->
+<div class="modal fade" id="EDIT_MODAL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tahrirlash</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body editForm">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/jquery.min.js"></script>
+<script src="/axios.min.js"></script>
+<script src="/toastr/notification.js"></script>
+<script src="/imask.js"></script>
+<script>
+
+    // Saqlash
+    const saveData = () => {
+        const uz = document.getElementById("TAG_UZ").value;
+        const ru = document.getElementById("TAG_RU").value;
+        const en = document.getElementById("TAG_EN").value;
+        if (uz == "" || ru == "" || en == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            const body = {
+                name: {
+                    uz: uz,
+                    ru: ru,
+                    en: en,
+                }
+            }
+            axios.post("/api/tag/create", body).then((response) => {
+                getDatas()
+            })
+        }
+    }
+
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+
+
+    // Jadvalga joylashtirish
+    const createTABLE = async (data) => {
+        const putTable = $(".putTable")
+        await putTable.html("")
+        data.forEach((item, index) => {
+            putTable.append(`
+                    <tr>
+                        <td style="vertical-align: middle ;">${index += 1}</td>
+                        <td style="vertical-align: middle ;">${item.name.uz}</td>
+                        <td style="vertical-align: middle ;">${item.name.ru}</td>
+                        <td style="vertical-align: middle ;">${item.name.en}</td>
+                        <td style="vertical-align: middle ;">${new Date(item.createdAt).toLocaleDateString()}</td>
+                        <td style="vertical-align: middle ;">
+                            <button onclick="getData('${item._id}')"  data-bs-toggle="modal" data-bs-target="#EDIT_MODAL" class="btn btn-warning" type="button">Tahrirlash</button>
+                            <button onclick="deleteData('${item._id}')"class="btn btn-danger" type="button">O'chirish</button>
+                        </td>
+                    </tr>
+                `)
+        });
+    }
+    // Jadvalni boshatish
+    const emptyTABLE = async () => {
+        const putTable = $(".putTable");
+        await putTable.html("");
+        putTable.append('')
+    }
+    // Paginatsiyani bo'shatish
+    const emptyPAGINATION = async () => {
+        const paginations = $("#paginations");
+        await paginations.html("");
+        paginations.append(``);
+    }
+
+    let default_pagination = 1
+    const getDatas = (pag) => {
+        emptyPAGINATION() // paginatsiya yangilanib oladi
+        const query = { params: { pages: (!pag || pag == undefined) ? default_pagination : (pag == 1) ? 1 : pag } }
+        axios.get("/api/tag/all", query)
+            .then(async (response) => {
+                const data = response.data.data;
+                const total = response.data.total;
+                const count = response.data.count;
+                if (data == "") {
+                    emptyTABLE()
+                    emptyPAGINATION()
+                }
+                else {
+                    createTABLE(data)
+
+                    // Paginatsiyani yangilash
+                    let paginationTotal = Math.ceil(parseInt(total) / count)
+                    const paginations = $("#paginations");
+                    await paginations.html("");
+                    for (let index = 1; index <= paginationTotal; index++) {
+                        paginations.append(`<button onclick="selectedPagination(${parseInt(index)})" type="button" style="border-radius: 10%; width: 35px; height: 35px;  margin: 1px; padding: 4px; font-size: 12px; text-align: center;" class="btn btn-outline-dark">${index}</button>`);
+                    }
+                }
+            })
+    }
+    getDatas()
+    const selectedPagination = (numbers) => {
+        getDatas(numbers)
+    }
+
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+
+    const deleteData = (id) => {
+        axios.delete(`/api/tag/${id}`).then((response) => {
+            getDatas()
+        })
+    }
+
+
+
+    // ---------------------------------------------------------------------------------------------------------------------------
+    const getData = (id) => {
+        axios.get(`/api/tag/${id}`).then(async (response) => {
+            const data = response.data.data;
+            const editForm = $(".editForm")
+            await editForm.html("")
+            editForm.append(`
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Yil nomi</span>
+                    <input type="text" value="${data.name.uz}" aria-label="" id="TAG_UZ_UPDATE" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Yil nomi</span>
+                    <input type="text" value="${data.name.ru}" aria-label="" id="TAG_RU_UPDATE" class="form-control">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Yil nomi</span>
+                    <input type="text" value="${data.name.en}" aria-label="" id="TAG_EN_UPDATE" class="form-control">
+                </div>
+                <button  type="button" onclick="editData('${data._id}')" class="btn btn-success">Saqlash</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+            `)
+        })
+    }
+    const editData = (id) => {
+        const uz = document.getElementById("TAG_UZ_UPDATE").value;
+        const ru = document.getElementById("TAG_RU_UPDATE").value;
+        const en = document.getElementById("TAG_EN_UPDATE").value;
+        if (uz == "" || ru == "" || en == "") {
+            DangerMessage("Ma'lumotni kiriting")
+        }
+        else {
+            const body = {
+                name: {
+                    uz: uz,
+                    ru: ru,
+                    en: en,
+                }
+            }
+            axios.put(`/api/tag/${id}`, body).then((response) => {
+                getDatas()
+            })
+        }
+    }
+
+
+
+
+</script>
